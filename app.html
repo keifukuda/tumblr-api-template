@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html {{ HTML_ATTRS }}>
+
+<head>
+  {{ HEAD }}
+
+  <script id='tumblr-api'>
+    (function () {
+      var meta = {}
+      var posts = []
+      var relatedPosts = []
+
+      meta = {
+        title: '{Title}',
+        description: '{Description}',
+        metaDescription: '{MetaDescription}',
+        name: '{Name}',
+        url: '{BlogURL}',
+        rss: '{RSS}',
+        sitemap: '{BlogURL}sitemap.xml',
+
+
+        // {block:IndexPage}
+        type: 'index',
+        // {/block:IndexPage}
+
+        // {block:PermalinkPage}
+        type: 'permalink',
+        // {/block:PermalinkPage}
+
+        code: 200,
+
+        // {block:Pagination}
+        // {block:PreviousPage}
+        prevUrl: '{BlogURL}{PreviousPage}',
+        // {/block:PreviousPage}
+        // {block:NextPage}
+        nextUrl: '{BlogURL}{NextPage}',
+        // {/block:NextPage}
+        totalPages: '{TotalPages}',
+        currentPage: '{CurrentPage}',
+        // {/block:Pagination}
+
+
+        // {block:PermalinkPagination}
+        // {block:PreviousPost}
+        prevPost: '{PreviousPost}',
+        // {/block:PreviousPost}
+        // {block:NextPost}
+        nextPost: '{NextPost}',
+        // {/block:NextPost}
+        // {/block:PermalinkPagination}
+
+
+        // {block:SubmissionsEnabled}
+        submissions: true,
+        submissionsLabel: '{SubmitLabel}',
+        // {/block:SubmissionsEnabled}
+
+        // {block:AskEnabled}
+        ask: true,
+        askLabel: '{AskLabel}',
+        // {/block:AskEnabled}
+
+        copyrightYears: '{CopyrightYears}',
+
+        avatar: {
+          '16x16': '{PortraitURL-16}',
+          '24x24': '{PortraitURL-24}',
+          '30x30': '{PortraitURL-30}',
+          '40x40': '{PortraitURL-40}',
+          '48x48': '{PortraitURL-48}',
+          '64x64': '{PortraitURL-64}',
+          '96x96': '{PortraitURL-96}',
+          '128x128': '{PortraitURL-128}'
+        },
+
+        pages: [
+          // {block:HasPages}
+          // {block:Pages}
+          {
+            label: '{Label}',
+            url: '{URL}'
+          },
+          // {/block:Pages}
+          // {/block:HasPages}
+        ]
+      }
+
+
+
+      posts = [
+        // ==================== PermalinkPage ====================
+        // {block:PermalinkPage}
+        // {block:Posts}
+
+        // ------------------ Text ------------------
+        // {block:Text}
+        {
+          // Base
+          id: '{PostID}',
+          url: '{Permalink}',
+          shortUrl: '{ShortURL}',
+          embedUrl: '{EmbedUrl}',
+          notesUrl: '{PostNotesURL}',
+          type: '{PostType}',
+          authorName: '{PostAuthorName}',
+          authorTitle: '{PostAuthorTitle}',
+          authorUrl: '{PostAuthorURL}',
+          authorPortraitUrl: {
+            '16x16': '{PostAuthorPortraitURL-16}',
+            '24x24': '{PostAuthorPortraitURL-24}',
+            '30x30': '{PostAuthorPortraitURL-30}',
+            '40x40': '{PostAuthorPortraitURL-40}',
+            '48x48': '{PostAuthorPortraitURL-48}',
+            '64x64': '{PostAuthorPortraitURL-64}',
+            '96x96': '{PostAuthorPortraitURL-96}',
+            '128x128': '{PostAuthorPortraitURL-128}'
+          },
+          tagAsClasses: '{TagsAsClasses}',
+          tags: [
+            // {block:Tags}
+            '{Tag}',
+            // {/block:Tags}
+          ],
+          // {block:Date}
+          timestamp: '{Timestamp}',
+          timeAgo: '{TimeAgo}',
+          // {/block:Date}
+          // {block:PostTitle}
+          postTitle: `{PostTitle}`,
+          // {/block:PostTitle}
+
+          // Text
+          // {block:Title}
+          title: `{Title}`,
+          // {/block:Title}
+          body: `{Body}`
+        },
+        // {/block:Text}
+
+
+
+        // ------------------ Photo ------------------
+        // {block:Photo}
+        {
+          // Base
+          id: '{PostID}',
+          url: '{Permalink}',
+          shortUrl: '{ShortURL}',
+          embedUrl: '{EmbedUrl}',
+          notesUrl: '{PostNotesURL}',
+          type: '{PostType}',
+          authorName: '{PostAuthorName}',
+          authorTitle: '{PostAuthorTitle}',
+          authorUrl: '{PostAuthorURL}',
+          authorPortraitUrl: {
+            '16x16': '{PostAuthorPortraitURL-16}',
+            '24x24': '{PostAuthorPortraitURL-24}',
+            '30x30': '{PostAuthorPortraitURL-30}',
+            '40x40': '{PostAuthorPortraitURL-40}',
+            '48x48': '{PostAuthorPortraitURL-48}',
+            '64x64': '{PostAuthorPortraitURL-64}',
+            '96x96': '{PostAuthorPortraitURL-96}',
+            '128x128': '{PostAuthorPortraitURL-128}'
+          },
+          tagAsClasses: '{TagsAsClasses}',
+          tags: [
+            // {block:Tags}
+            '{Tag}',
+            // {/block:Tags}
+          ],
+          // {block:Date}
+          timestamp: '{Timestamp}',
+          timeAgo: '{TimeAgo}',
+          // {/block:Date}
+          // {block:PostTitle}
+          postTitle: '{PostTitle}',
+          // {/block:PostTitle}
+
+          // Photo
+          // {block:Caption}
+          caption: `{Caption}`,
+          // {/block:Caption}
+          photoCount: '1',
+          photos: [
+            {
+              original: '{PhotoURL-HighRes}',
+              '1280x': '{PhotoURL-1280}',
+              '500x': '{PhotoURL-500}',
+              '400x': '{PhotoURL-400}',
+              '250x': '{PhotoURL-250}',
+              '100x': '{PhotoURL-100}',
+              '75x75': '{PhotoURL-75sq}'
+            }
+          ]
+        },
+        // {/block:Photo}
+
+
+        // ------------------ Photoset ------------------
+        // {block:Photoset}
+        {
+          // Base
+          id: '{PostID}',
+          url: '{Permalink}',
+          shortUrl: '{ShortURL}',
+          embedUrl: '{EmbedUrl}',
+          notesUrl: '{PostNotesURL}',
+          type: '{PostType}',
+          authorName: '{PostAuthorName}',
+          authorTitle: '{PostAuthorTitle}',
+          authorUrl: '{PostAuthorURL}',
+          authorPortraitUrl: {
+            '16x16': '{PostAuthorPortraitURL-16}',
+            '24x24': '{PostAuthorPortraitURL-24}',
+            '30x30': '{PostAuthorPortraitURL-30}',
+            '40x40': '{PostAuthorPortraitURL-40}',
+            '48x48': '{PostAuthorPortraitURL-48}',
+            '64x64': '{PostAuthorPortraitURL-64}',
+            '96x96': '{PostAuthorPortraitURL-96}',
+            '128x128': '{PostAuthorPortraitURL-128}'
+          },
+          tagAsClasses: '{TagsAsClasses}',
+          tags: [
+            // {block:Tags}
+            '{Tag}',
+            // {/block:Tags}
+          ],
+          // {block:Date}
+          timestamp: '{Timestamp}',
+          timeAgo: '{TimeAgo}',
+          // {/block:Date}
+          // {block:PostTitle}
+          postTitle: '{PostTitle}',
+          // {/block:PostTitle}
+
+          // Photoset
+          // {block:Caption}
+          caption: `{Caption}`,
+          // {/block:Caption}
+          photosetLayout: '{PhotosetLayout}',
+          photoCount: '{PhotoCount}',
+
+          photos: [
+            // {block:Photos}
+            {
+              original: '{PhotoURL-HighRes}',
+              '1280x': '{PhotoURL-1280}',
+              '500x': '{PhotoURL-500}',
+              '400x': '{PhotoURL-400}',
+              '250x': '{PhotoURL-250}',
+              '100x': '{PhotoURL-100}',
+              '75x75': '{PhotoURL-75sq}'
+            },
+            // {/block:Photos}
+          ]
+        },
+        // {/block:Photoset}
+
+
+        // ------------------ Video ------------------
+        // {block:Video}
+        {
+          // Base
+          id: '{PostID}',
+          url: '{Permalink}',
+          shortUrl: '{ShortURL}',
+          embedUrl: '{EmbedUrl}',
+          notesUrl: '{PostNotesURL}',
+          type: '{PostType}',
+          authorName: '{PostAuthorName}',
+          authorTitle: '{PostAuthorTitle}',
+          authorUrl: '{PostAuthorURL}',
+          authorPortraitUrl: {
+            '16x16': '{PostAuthorPortraitURL-16}',
+            '24x24': '{PostAuthorPortraitURL-24}',
+            '30x30': '{PostAuthorPortraitURL-30}',
+            '40x40': '{PostAuthorPortraitURL-40}',
+            '48x48': '{PostAuthorPortraitURL-48}',
+            '64x64': '{PostAuthorPortraitURL-64}',
+            '96x96': '{PostAuthorPortraitURL-96}',
+            '128x128': '{PostAuthorPortraitURL-128}'
+          },
+          tagAsClasses: '{TagsAsClasses}',
+          tags: [
+            // {block:Tags}
+            '{Tag}',
+            // {/block:Tags}
+          ],
+          // {block:Date}
+          timestamp: '{Timestamp}',
+          timeAgo: '{TimeAgo}',
+          // {/block:Date}
+          // {block:PostTitle}
+          postTitle: '{PostTitle}',
+          // {/block:PostTitle}
+
+          // Video
+          // {block:Caption}
+          caption: `{Caption}`,
+          // {/block:Caption}
+          video: {
+            '700x': '{Video-700}',
+            '500x': '{Video-500}',
+            '400x': '{Video-400}',
+            '250x': '{Video-250}',
+          },
+          videoEmbed: {
+            '700x': '{VideoEmbed-700}',
+            '500x': '{VideoEmbed-500}',
+            '400x': '{VideoEmbed-400}',
+            '250x': '{VideoEmbed-250}',
+          },
+          playCount: '{PlayCount}',
+          formattedPlayCount: '{FormattedPlayCount}',
+          playCountWithLabel: '{PlayCountWithLabel}',
+          // {block:VideoThumbnail}
+          thumbnailUrl: '{VideoThumbnailURL}',
+          // {/block:VideoThumbnail}
+
+          // {block:VideoThumbnails}
+          thumbnailUrl: '{VideoThumbnailURL}',
+          // {/block:VideoThumbnails}
+        },
+        // {/block:Video}
+
+
+        // {/block:Posts}
+        // {/block:PermalinkPage}
+
+
+
+
+        // ==================== IndexPage ====================
+        // {block:IndexPage}
+        // {block:Posts}
+
+        // ------------------ Text ------------------
+        // {block:Text}
+        {
+          // Base
+          id: '{PostID}',
+          url: '{Permalink}',
+          shortUrl: '{ShortURL}',
+          embedUrl: '{EmbedUrl}',
+          notesUrl: '{PostNotesURL}',
+          type: '{PostType}',
+          authorName: '{PostAuthorName}',
+          authorTitle: '{PostAuthorTitle}',
+          authorUrl: '{PostAuthorURL}',
+          authorPortraitUrl: {
+            '16x16': '{PostAuthorPortraitURL-16}',
+            '24x24': '{PostAuthorPortraitURL-24}',
+            '30x30': '{PostAuthorPortraitURL-30}',
+            '40x40': '{PostAuthorPortraitURL-40}',
+            '48x48': '{PostAuthorPortraitURL-48}',
+            '64x64': '{PostAuthorPortraitURL-64}',
+            '96x96': '{PostAuthorPortraitURL-96}',
+            '128x128': '{PostAuthorPortraitURL-128}'
+          },
+          tagAsClasses: '{TagsAsClasses}',
+          tags: [
+            // {block:Tags}
+            '{Tag}',
+            // {/block:Tags}
+          ],
+          // {block:Date}
+          timestamp: '{Timestamp}',
+          timeAgo: '{TimeAgo}',
+          // {/block:Date}
+          // {block:PostTitle}
+          postTitle: `{PostTitle}`,
+          // {/block:PostTitle}
+
+          // Text
+          // {block:Title}
+          title: `{Title}`,
+          // {/block:Title}
+          body: `{Body}`
+        },
+        // {/block:Text}
+
+
+        // ------------------ Photo ------------------
+        // {block:Photo}
+        {
+          // Base
+          id: '{PostID}',
+          url: '{Permalink}',
+          shortUrl: '{ShortURL}',
+          embedUrl: '{EmbedUrl}',
+          notesUrl: '{PostNotesURL}',
+          type: '{PostType}',
+          authorName: '{PostAuthorName}',
+          authorTitle: '{PostAuthorTitle}',
+          authorUrl: '{PostAuthorURL}',
+          authorPortraitUrl: {
+            '16x16': '{PostAuthorPortraitURL-16}',
+            '24x24': '{PostAuthorPortraitURL-24}',
+            '30x30': '{PostAuthorPortraitURL-30}',
+            '40x40': '{PostAuthorPortraitURL-40}',
+            '48x48': '{PostAuthorPortraitURL-48}',
+            '64x64': '{PostAuthorPortraitURL-64}',
+            '96x96': '{PostAuthorPortraitURL-96}',
+            '128x128': '{PostAuthorPortraitURL-128}'
+          },
+          tagAsClasses: '{TagsAsClasses}',
+          tags: [
+            // {block:Tags}
+            '{Tag}',
+            // {/block:Tags}
+          ],
+          // {block:Date}
+          timestamp: '{Timestamp}',
+          timeAgo: '{TimeAgo}',
+          // {/block:Date}
+          // {block:PostTitle}
+          postTitle: '{PostTitle}',
+          // {/block:PostTitle}
+
+          // Photo
+          // {block:Caption}
+          caption: `{Caption}`,
+          // {/block:Caption}
+          photoCount: '1',
+          photos: [
+            {
+              original: '{PhotoURL-HighRes}',
+              '1280x': '{PhotoURL-1280}',
+              '500x': '{PhotoURL-500}',
+              '400x': '{PhotoURL-400}',
+              '250x': '{PhotoURL-250}',
+              '100x': '{PhotoURL-100}',
+              '75x75': '{PhotoURL-75sq}'
+            }
+          ]
+        },
+        // {/block:Photo}
+
+
+        // ------------------ Photoset ------------------
+        // {block:Photoset}
+        {
+          // Base
+          id: '{PostID}',
+          url: '{Permalink}',
+          shortUrl: '{ShortURL}',
+          embedUrl: '{EmbedUrl}',
+          notesUrl: '{PostNotesURL}',
+          type: '{PostType}',
+          authorName: '{PostAuthorName}',
+          authorTitle: '{PostAuthorTitle}',
+          authorUrl: '{PostAuthorURL}',
+          authorPortraitUrl: {
+            '16x16': '{PostAuthorPortraitURL-16}',
+            '24x24': '{PostAuthorPortraitURL-24}',
+            '30x30': '{PostAuthorPortraitURL-30}',
+            '40x40': '{PostAuthorPortraitURL-40}',
+            '48x48': '{PostAuthorPortraitURL-48}',
+            '64x64': '{PostAuthorPortraitURL-64}',
+            '96x96': '{PostAuthorPortraitURL-96}',
+            '128x128': '{PostAuthorPortraitURL-128}'
+          },
+          tagAsClasses: '{TagsAsClasses}',
+          tags: [
+            // {block:Tags}
+            '{Tag}',
+            // {/block:Tags}
+          ],
+          // {block:Date}
+          timestamp: '{Timestamp}',
+          timeAgo: '{TimeAgo}',
+          // {/block:Date}
+          // {block:PostTitle}
+          postTitle: '{PostTitle}',
+          // {/block:PostTitle}
+
+          // Photoset
+          // {block:Caption}
+          caption: `{Caption}`,
+          // {/block:Caption}
+          photosetLayout: '{PhotosetLayout}',
+          photoCount: '{PhotoCount}',
+
+          photos: [
+            // {block:Photos}
+            {
+              original: '{PhotoURL-HighRes}',
+              '1280x': '{PhotoURL-1280}',
+              '500x': '{PhotoURL-500}',
+              '400x': '{PhotoURL-400}',
+              '250x': '{PhotoURL-250}',
+              '100x': '{PhotoURL-100}',
+              '75x75': '{PhotoURL-75sq}'
+            },
+            // {/block:Photos}
+          ]
+        },
+        // {/block:Photoset}
+
+
+        // ------------------ Video ------------------
+        // {block:Video}
+        {
+          // Base
+          id: '{PostID}',
+          url: '{Permalink}',
+          shortUrl: '{ShortURL}',
+          embedUrl: '{EmbedUrl}',
+          notesUrl: '{PostNotesURL}',
+          type: '{PostType}',
+          authorName: '{PostAuthorName}',
+          authorTitle: '{PostAuthorTitle}',
+          authorUrl: '{PostAuthorURL}',
+          authorPortraitUrl: {
+            '16x16': '{PostAuthorPortraitURL-16}',
+            '24x24': '{PostAuthorPortraitURL-24}',
+            '30x30': '{PostAuthorPortraitURL-30}',
+            '40x40': '{PostAuthorPortraitURL-40}',
+            '48x48': '{PostAuthorPortraitURL-48}',
+            '64x64': '{PostAuthorPortraitURL-64}',
+            '96x96': '{PostAuthorPortraitURL-96}',
+            '128x128': '{PostAuthorPortraitURL-128}'
+          },
+          tagAsClasses: '{TagsAsClasses}',
+          tags: [
+            // {block:Tags}
+            '{Tag}',
+            // {/block:Tags}
+          ],
+          // {block:Date}
+          timestamp: '{Timestamp}',
+          timeAgo: '{TimeAgo}',
+          // {/block:Date}
+          // {block:PostTitle}
+          postTitle: '{PostTitle}',
+          // {/block:PostTitle}
+
+          // Video
+          // {block:Caption}
+          caption: `{Caption}`,
+          // {/block:Caption}
+          video: {
+            '700x': '{Video-700}',
+            '500x': '{Video-500}',
+            '400x': '{Video-400}',
+            '250x': '{Video-250}',
+          },
+          videoEmbed: {
+            '700x': '{VideoEmbed-700}',
+            '500x': '{VideoEmbed-500}',
+            '400x': '{VideoEmbed-400}',
+            '250x': '{VideoEmbed-250}',
+          },
+          playCount: '{PlayCount}',
+          formattedPlayCount: '{FormattedPlayCount}',
+          playCountWithLabel: '{PlayCountWithLabel}',
+          // {block:VideoThumbnail}
+          thumbnailUrl: '{VideoThumbnailURL}',
+          // {/block:VideoThumbnail}
+
+          // {block:VideoThumbnails}
+          thumbnailUrl: '{VideoThumbnailURL}',
+          // {/block:VideoThumbnails}
+        },
+        // {/block:Video}
+
+        // {/block:Posts}
+        // {/block:IndexPage}
+      ]
+
+
+      relatedPosts = [
+        // {block:RelatedPosts}
+        // {block:Posts}
+        // ------------------ Text ------------------
+        // {block:Text}
+        {
+          // Base
+          id: '{PostID}',
+          url: '{Permalink}',
+          shortUrl: '{ShortURL}',
+          embedUrl: '{EmbedUrl}',
+          notesUrl: '{PostNotesURL}',
+          type: '{PostType}',
+          authorName: '{PostAuthorName}',
+          authorTitle: '{PostAuthorTitle}',
+          authorUrl: '{PostAuthorURL}',
+          authorPortraitUrl: {
+            '16x16': '{PostAuthorPortraitURL-16}',
+            '24x24': '{PostAuthorPortraitURL-24}',
+            '30x30': '{PostAuthorPortraitURL-30}',
+            '40x40': '{PostAuthorPortraitURL-40}',
+            '48x48': '{PostAuthorPortraitURL-48}',
+            '64x64': '{PostAuthorPortraitURL-64}',
+            '96x96': '{PostAuthorPortraitURL-96}',
+            '128x128': '{PostAuthorPortraitURL-128}'
+          },
+          tagAsClasses: '{TagsAsClasses}',
+          tags: [
+            // {block:Tags}
+            '{Tag}',
+            // {/block:Tags}
+          ],
+          // {block:Date}
+          timestamp: '{Timestamp}',
+          timeAgo: '{TimeAgo}',
+          // {/block:Date}
+          // {block:PostTitle}
+          postTitle: `{PostTitle}`,
+          // {/block:PostTitle}
+
+          // Text
+          // {block:Title}
+          title: `{Title}`,
+          // {/block:Title}
+          body: `{Body}`
+        },
+        // {/block:Text}
+
+
+        // ------------------ Photo ------------------
+        // {block:Photo}
+        {
+          // Base
+          id: '{PostID}',
+          url: '{Permalink}',
+          shortUrl: '{ShortURL}',
+          embedUrl: '{EmbedUrl}',
+          notesUrl: '{PostNotesURL}',
+          type: '{PostType}',
+          authorName: '{PostAuthorName}',
+          authorTitle: '{PostAuthorTitle}',
+          authorUrl: '{PostAuthorURL}',
+          authorPortraitUrl: {
+            '16x16': '{PostAuthorPortraitURL-16}',
+            '24x24': '{PostAuthorPortraitURL-24}',
+            '30x30': '{PostAuthorPortraitURL-30}',
+            '40x40': '{PostAuthorPortraitURL-40}',
+            '48x48': '{PostAuthorPortraitURL-48}',
+            '64x64': '{PostAuthorPortraitURL-64}',
+            '96x96': '{PostAuthorPortraitURL-96}',
+            '128x128': '{PostAuthorPortraitURL-128}'
+          },
+          tagAsClasses: '{TagsAsClasses}',
+          tags: [
+            // {block:Tags}
+            '{Tag}',
+            // {/block:Tags}
+          ],
+          // {block:Date}
+          timestamp: '{Timestamp}',
+          timeAgo: '{TimeAgo}',
+          // {/block:Date}
+          // {block:PostTitle}
+          postTitle: '{PostTitle}',
+          // {/block:PostTitle}
+
+          // Photo
+          // {block:Caption}
+          caption: `{Caption}`,
+          // {/block:Caption}
+          photoCount: '1',
+          photos: [
+            {
+              original: '{PhotoURL-HighRes}',
+              '1280x': '{PhotoURL-1280}',
+              '500x': '{PhotoURL-500}',
+              '400x': '{PhotoURL-400}',
+              '250x': '{PhotoURL-250}',
+              '100x': '{PhotoURL-100}',
+              '75x75': '{PhotoURL-75sq}'
+            }
+          ]
+        },
+        // {/block:Photo}
+
+
+        // ------------------ Photoset ------------------
+        // {block:Photoset}
+        {
+          // Base
+          id: '{PostID}',
+          url: '{Permalink}',
+          shortUrl: '{ShortURL}',
+          embedUrl: '{EmbedUrl}',
+          notesUrl: '{PostNotesURL}',
+          type: '{PostType}',
+          authorName: '{PostAuthorName}',
+          authorTitle: '{PostAuthorTitle}',
+          authorUrl: '{PostAuthorURL}',
+          authorPortraitUrl: {
+            '16x16': '{PostAuthorPortraitURL-16}',
+            '24x24': '{PostAuthorPortraitURL-24}',
+            '30x30': '{PostAuthorPortraitURL-30}',
+            '40x40': '{PostAuthorPortraitURL-40}',
+            '48x48': '{PostAuthorPortraitURL-48}',
+            '64x64': '{PostAuthorPortraitURL-64}',
+            '96x96': '{PostAuthorPortraitURL-96}',
+            '128x128': '{PostAuthorPortraitURL-128}'
+          },
+          tagAsClasses: '{TagsAsClasses}',
+          tags: [
+            // {block:Tags}
+            '{Tag}',
+            // {/block:Tags}
+          ],
+          // {block:Date}
+          timestamp: '{Timestamp}',
+          timeAgo: '{TimeAgo}',
+          // {/block:Date}
+          // {block:PostTitle}
+          postTitle: '{PostTitle}',
+          // {/block:PostTitle}
+
+          // Photoset
+          // {block:Caption}
+          caption: `{Caption}`,
+          // {/block:Caption}
+          photosetLayout: '{PhotosetLayout}',
+          photoCount: '{PhotoCount}',
+
+          photos: [
+            // {block:Photos}
+            {
+              original: '{PhotoURL-HighRes}',
+              '1280x': '{PhotoURL-1280}',
+              '500x': '{PhotoURL-500}',
+              '400x': '{PhotoURL-400}',
+              '250x': '{PhotoURL-250}',
+              '100x': '{PhotoURL-100}',
+              '75x75': '{PhotoURL-75sq}'
+            },
+            // {/block:Photos}
+          ]
+        },
+        // {/block:Photoset}
+
+
+        // ------------------ Video ------------------
+        // {block:Video}
+        {
+          // Base
+          id: '{PostID}',
+          url: '{Permalink}',
+          shortUrl: '{ShortURL}',
+          embedUrl: '{EmbedUrl}',
+          notesUrl: '{PostNotesURL}',
+          type: '{PostType}',
+          authorName: '{PostAuthorName}',
+          authorTitle: '{PostAuthorTitle}',
+          authorUrl: '{PostAuthorURL}',
+          authorPortraitUrl: {
+            '16x16': '{PostAuthorPortraitURL-16}',
+            '24x24': '{PostAuthorPortraitURL-24}',
+            '30x30': '{PostAuthorPortraitURL-30}',
+            '40x40': '{PostAuthorPortraitURL-40}',
+            '48x48': '{PostAuthorPortraitURL-48}',
+            '64x64': '{PostAuthorPortraitURL-64}',
+            '96x96': '{PostAuthorPortraitURL-96}',
+            '128x128': '{PostAuthorPortraitURL-128}'
+          },
+          tagAsClasses: '{TagsAsClasses}',
+          tags: [
+            // {block:Tags}
+            '{Tag}',
+            // {/block:Tags}
+          ],
+          // {block:Date}
+          timestamp: '{Timestamp}',
+          timeAgo: '{TimeAgo}',
+          // {/block:Date}
+          // {block:PostTitle}
+          postTitle: '{PostTitle}',
+          // {/block:PostTitle}
+
+          // Video
+          // {block:Caption}
+          caption: `{Caption}`,
+          // {/block:Caption}
+          video: {
+            '700x': '{Video-700}',
+            '500x': '{Video-500}',
+            '400x': '{Video-400}',
+            '250x': '{Video-250}',
+          },
+          videoEmbed: {
+            '700x': '{VideoEmbed-700}',
+            '500x': '{VideoEmbed-500}',
+            '400x': '{VideoEmbed-400}',
+            '250x': '{VideoEmbed-250}',
+          },
+          playCount: '{PlayCount}',
+          formattedPlayCount: '{FormattedPlayCount}',
+          playCountWithLabel: '{PlayCountWithLabel}',
+          // {block:VideoThumbnail}
+          thumbnailUrl: '{VideoThumbnailURL}',
+          // {/block:VideoThumbnail}
+
+          // {block:VideoThumbnails}
+          thumbnailUrl: '{VideoThumbnailURL}',
+          // {/block:VideoThumbnails}
+        },
+        // {/block:Video}
+        // {/block:Posts}
+        // {/block:RelatedPosts}
+      ]
+
+      if (meta.prevUrl) {
+        meta.prevUrl = meta.url + meta.prevUrl.slice(1)
+      }
+
+      if (meta.nextUrl) {
+        meta.nextUrl = meta.url + meta.nextUrl.slice(1)
+      }
+
+      if (meta.type == 'permalink') {
+
+        // customPage
+        if (posts[0].embedUrl == '/embed') {
+          meta.type = 'custom'
+        }
+
+        // notFound
+        else if (posts[0].embedUrl == '') {
+          meta.code = 404
+          meta.type = 'notfound'
+        }
+      }
+
+      return {
+        meta: meta,
+        posts: posts,
+        relatedPosts: relatedPosts
+      }
+    })
+
+  </script>
+</head>
+
+<body {{ BODY_ATTRS }}>
+  {{ APP }}
+</body>
+
+</html>
